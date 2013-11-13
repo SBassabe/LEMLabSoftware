@@ -1,11 +1,7 @@
 package com.lem.project.shared;
 
 import java.io.Serializable;
-import java.util.List;
 
-/**
- * The 'detailed' Data Transfer Object for the Friend class
- */
 @SuppressWarnings("serial")
 public class InterventoDTO implements Serializable {
 
@@ -13,11 +9,11 @@ public class InterventoDTO implements Serializable {
   private String data;
   private String operatore;
   private String macchina;
+  //private List<String> descrizione;
   private String descrizione;
   //private List<String> search;
 
-  public InterventoDTO() {
-  }
+  public InterventoDTO() {}
 
   public InterventoDTO(String data, String operatore, String macchina, String descrizione) {
     this();

@@ -1,9 +1,7 @@
 package com.lem.project.client;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.lem.project.shared.FieldVerifier;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -21,6 +19,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.lem.project.shared.*;
+//import com.google.appengine.api.datastore.Text;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -59,10 +58,11 @@ public class LEMSandbox implements EntryPoint {
 							
 							//Set header
 							g.setText(0, 0, "Data");
+							g.getCellFormatter().setWidth(0, 0, "70px");
 							g.setText(0, 1, "Operatore");
 							g.setText(0, 2, "Macchina");
 							g.setText(0, 3, "Descrizione Intervento");
-							g.getCellFormatter().setWidth(0, 3, "350px");
+							g.getCellFormatter().setWidth(0, 3, "550px");
 							g.getRowFormatter().setStyleName(0, "headerRowStyle");
 							
 							if (r>0) {
@@ -81,6 +81,16 @@ public class LEMSandbox implements EntryPoint {
 							g.setStyleName("tableStyle");
 							RootPanel.get("gridContainer").clear();
 							RootPanel.get("gridContainer").add(g);
+							
+							if (r > 99) {
+								
+								Label lb = new Label();
+								lb.setText("Restituiti piu di 100 occorenze. Restringere la ricerca!!");
+								RootPanel.get("errorLabelContainer").clear();
+								RootPanel.get("errorLabelContainer").add(lb);
+
+							}
+							
 						}
 					});
 		} catch (Exception e) {

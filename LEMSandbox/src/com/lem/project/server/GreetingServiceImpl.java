@@ -1,15 +1,12 @@
 package com.lem.project.server;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
-
-
-
-
-
 
 //import com.lem.project.server.domain.Intervento;
 import com.lem.project.client.GreetingService;
@@ -52,16 +49,25 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 	public List<InterventoDTO> getInterList(String txt) {
 		
 		System.out.println("getInterList() -> start ...");
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-
 		List<InterventoDTO> lst = new ArrayList<InterventoDTO>();
+		if (txt != null && "Stats:".compareTo(txt) == 0) {
+			
+			showStatOnLog(txt);
+			return lst;
+		}
+		
+		// Instatiate Persistance Manager
+		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query query = null;
 	
 		try {
 			
+			// Prepare intervento list for FrontEnd
 			List<Intervento> rs = new ArrayList<Intervento>();
 			query = pm.newQuery(Intervento.class);
+			query.setRange(0, 100);
 			
+			// Search input given
 			if (txt.length() > 1) {
 				
 				List<SearchItem> rs1 = new ArrayList<SearchItem>();
@@ -89,6 +95,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 					rs = (List<Intervento>) query.execute(rs3);
 				}
 				
+			// No search text in SearchBox	
 			} else {
 				
 				rs = (List<Intervento>) query.execute();
@@ -99,7 +106,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 			System.out.println("getInterList() -> rs.size " + rs.size());
 			if (rs.iterator().hasNext()) {
 				for (Intervento inter : rs) {
-					InterventoDTO intDto = new InterventoDTO(inter.getData(),inter.getOperatore(),inter.getMacchina(),inter.getDescrizione());
+					System.out.println("inter.getDescrizione() -> " + inter.getDescrizione());
+					InterventoDTO intDto = new InterventoDTO(inter.getData(),inter.getOperatore(),inter.getMacchina(), inter.getDescrizione());
 					lst.add(intDto);
 					System.out.println("getInterList() -> retreving ..." + ++i);
 				}
@@ -112,6 +120,38 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		}
 		
 		return lst;
+		
+	}
+
+	private void showStatOnLog(String txt) {
+		
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		// SBassabe -> this does not work argggggasdfasdf!!!
+		/*
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		
+		//Entity globalStat = datastore.prepare(new com.google.appengine.api.datastore.Query("__Stat_Total__")).asSingleEntity();
+		Entity globalStat = datastore.get
+		Long totalBytes = (Long) globalStat.getProperty("bytes");
+		Long totalEntities = (Long) globalStat.getProperty("count");
+		
+		System.out.println("totalBytes ->" + totalBytes);
+		*/
+		
+		List<String> lst = null;
+		
+		Query query = null;
+		query = pm.newQuery("SELECT word FROM " + com.lem.project.server.domain.SearchItem.class.getName());
+		
+        lst = (List<String>)query.execute();
+        System.out.println("lst.size() -> " + lst.size());
+        
+        Set<String> st = new HashSet<String>();
+        st.addAll(lst);
+        
+        System.out.println("st.size() -> " + st.size());
+		
+		pm.close();
 		
 	}
 

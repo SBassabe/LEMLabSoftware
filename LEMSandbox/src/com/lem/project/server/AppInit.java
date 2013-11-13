@@ -9,8 +9,10 @@ import java.util.Set;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+import com.google.appengine.api.datastore.Text;
 import com.lem.project.server.domain.Intervento;
 import com.lem.project.server.domain.SearchItem;
+import com.lem.project.data.Loader;
 
 public class AppInit {
 
@@ -36,39 +38,35 @@ public class AppInit {
   
 	System.out.println("populateDataStoreForTest() ...  started  ...");   
 	String ret = "";
-	int numRec=0;
+	int numInter=0;
+	int numSItems=0;
 	
 	PersistenceManager pm1 = PMF.get().getPersistenceManager();
-	numRec = isEntitySizeGtZero(pm1); 
-	if (numRec > 0) return "Inserts not performed '" + numRec + "' found in DataStore";
+	numInter = isEntitySizeGtZero(pm1); 
+	if (numInter > 0) return "Inserts not performed '" + numInter + "' found in DataStore";
     
     System.out.println("populateDataStoreForTest: Entity empty, loading stuff now ...");
-    Intervento inter = null;
     
     try {
- 
-      //List<Intervento> lst = new ArrayList<Intervento>();	 
-      for (int i = 0; i < sampleOperatori.length; ++i) {
-        
-    	List<String> srchLst = new ArrayList<String>();  
-    	inter = new Intervento();
-        inter.setBasicInfo("OCT-0"+i, sampleOperatori[i], sampleMacchina[i], sampleDesc[i]);
-         
-        srchLst.add(inter.getData().toLowerCase());
-        srchLst.add(inter.getDescrizione().toLowerCase());
-        srchLst.add(inter.getMacchina().toLowerCase());
-        srchLst.add(inter.getOperatore().toLowerCase());
-        inter.setSearch(srchLst);
-        //lst.add(inter);
-        pm1.makePersistent(inter);
-        
-        addSearchItems(inter, pm1);
-        numRec++;
-        System.out.println("populateDataStoreForTest: adding ..." + i );
+    	
+      Loader lfo = new Loader();
+      //lfo.loadArray2001();
+      //lfo.loadArray2011();
+      Intervento inter = null;
+      
+      Iterator<Intervento> it = lfo.getList().iterator();
+      int i=0;
+      while (it.hasNext()) {
+    	  
+    	  inter = it.next();
+    	  System.out.println("making persistent item -> " + ++i);
+    	  pm1.makePersistent(inter);
+    	  numSItems = numSItems+addSearchItems(inter, pm1);
+    	  ++numInter;
       }
-      ret = "DataStore populated with '" + numRec + "' records.";
-      //pm1.makePersistentAll(lst);
-
+      
+      ret = "Populate Stats -> : Intervento='"+numInter+"', SearchItems='"+numSItems+"'";
+      
     } // end try
     catch (Exception e) {
       e.printStackTrace();
@@ -80,11 +78,60 @@ public class AppInit {
     return ret;
   }
   
-  private void addSearchItems(Intervento inter, PersistenceManager pm) {
+  public String populateDataStoreForTestOld() {
+	  
+		System.out.println("populateDataStoreForTest() ...  started  ...");   
+		String ret = "";
+		int numRec=0;
+		
+		PersistenceManager pm1 = PMF.get().getPersistenceManager();
+		numRec = isEntitySizeGtZero(pm1); 
+		if (numRec > 0) return "Inserts not performed '" + numRec + "' found in DataStore";
+	    
+	    System.out.println("populateDataStoreForTest: Entity empty, loading stuff now ...");
+	    Intervento inter = null;
+	    
+	    try {
+	 
+	      //List<Intervento> lst = new ArrayList<Intervento>();	 
+	      for (int i = 0; i < sampleOperatori.length; ++i) {
+	        
+	    	List<String> srchLst = new ArrayList<String>();  
+	    	inter = new Intervento();
+	        inter.setBasicInfo("OCT-0"+i, sampleOperatori[i], sampleMacchina[i], sampleDesc[i]);
+	         
+//	        srchLst.add(inter.getData().toLowerCase());
+//	        srchLst.add(inter.getDescrizione().toLowerCase());
+//	        srchLst.add(inter.getMacchina().toLowerCase());
+//	        srchLst.add(inter.getOperatore().toLowerCase());
+//	        inter.setSearch(srchLst);
+	        //lst.add(inter);
+	        pm1.makePersistent(inter);
+	        
+	        addSearchItems(inter, pm1);
+	        numRec++;
+	        System.out.println("populateDataStoreForTest: adding ..." + i );
+	      }
+	      ret = "DataStore populated with '" + numRec + "' records.";
+	      //pm1.makePersistentAll(lst);
+
+	    } // end try
+	    catch (Exception e) {
+	      e.printStackTrace();
+	      ret = "Error in populate ... see logs.";
+	    } finally {
+	      pm1.close();
+	      System.out.println("populateDataStoreForTest() ... finished ...");
+	    }
+	    return ret;
+	  }
+  
+  private int addSearchItems(Intervento inter, PersistenceManager pm) {
 	
-	  System.out.println("into addSearchItems ...");
+	  //System.out.println("into addSearchItems ...");
 	  String[] tmp;
 	  String delim = " ";
+	  int j=0;
 	  Set<String> wrdSet = new HashSet<String>();
 	  // Data
 	  if (inter.getData() != null) {
@@ -123,9 +170,10 @@ public class AppInit {
 		  SearchItem si = new SearchItem();
 		  si.setWord(itStr.next());
 		  si.setParentId(inter.getId());
-		  System.out.println("addSearchItems ... persisting SearchItemObject...");
+		  System.out.println("addSearchItems ... persisting object " + ++j);
 		  pm.makePersistent(si);
 	  }
+	  return j;
   }
   
   private int isEntitySizeGtZero(PersistenceManager pm) {

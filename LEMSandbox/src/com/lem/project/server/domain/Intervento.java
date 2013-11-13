@@ -1,6 +1,5 @@
 package com.lem.project.server.domain;
 
-import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -10,7 +9,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import javax.jdo.listener.LoadCallback;
 import com.lem.project.shared.InterventoDTO;
-
+import com.google.appengine.api.datastore.Text;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public class Intervento implements LoadCallback {
@@ -28,8 +27,6 @@ public class Intervento implements LoadCallback {
 	  private String macchina;
 	  @Persistent
 	  private String descrizione;
-	  @Persistent
-	  private List<String> search;
 	
 	  public Intervento() {}
 	
@@ -95,14 +92,6 @@ public class Intervento implements LoadCallback {
 		
 		public void setId(String id) {
 			this.id = id;
-		}
-		
-		public List<String> getSearch() {
-			return search;
-		}
-		
-		public void setSearch(List<String> search) {
-			this.search = search;
 		}
   
 }
