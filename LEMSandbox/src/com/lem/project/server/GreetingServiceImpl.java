@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+
 //import com.lem.project.server.domain.Intervento;
 import com.lem.project.client.GreetingService;
 import com.lem.project.shared.FieldVerifier;
@@ -15,6 +16,11 @@ import com.lem.project.shared.InterventoDTO;
 import com.lem.project.server.PMF;
 import com.lem.project.server.domain.Intervento;
 import com.lem.project.server.domain.SearchItem;
+import com.google.appengine.api.search.Index;
+import com.google.appengine.api.search.IndexSpec;
+import com.google.appengine.api.search.Results;
+import com.google.appengine.api.search.ScoredDocument;
+import com.google.appengine.api.search.SearchServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -49,6 +55,55 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 	public List<InterventoDTO> getInterList(String txt) {
 		
 		System.out.println("getInterList() -> start ...");
+		List<InterventoDTO> lst = new ArrayList<InterventoDTO>();
+		
+		try {
+			
+			//queryStuff = "macchina > ~TIMSON";
+			System.out.println("txt -> " + txt);
+			String queryString = txt;
+			InterventoDTO intDto;
+			
+			IndexSpec indexSpec = IndexSpec.newBuilder().setName("IndexName2").build(); 
+			Index index = SearchServiceFactory.getSearchService().getIndex(indexSpec);
+			
+			index.search(queryString);
+		    Results<ScoredDocument> results = index.search(queryString);
+
+		    System.out.println("items found -> " + results.getNumberFound());
+		    System.out.println("items returned -> " + results.getNumberReturned());
+		    
+		    intDto = new InterventoDTO();
+		    intDto.setDescrizione("Record Trovati: '"+ results.getNumberFound() +"'  Record Mostrati: '"+ results.getNumberReturned() +"'");
+		    lst.add(intDto);
+		    
+		    // Iterate over the documents in the results
+		    for (ScoredDocument document : results) {
+
+		    	System.out.println("getId() -> " + document.getId() +  ",  macchina: " + document.getOnlyField("macchina").getText());
+		        // handle results
+		    	intDto = new InterventoDTO(document.getOnlyField("data").getText()
+		    			                                ,document.getOnlyField("operatore").getText()
+		    			                                ,document.getOnlyField("macchina").getText()
+		    			                                ,document.getOnlyField("descrizione").getText());
+				lst.add(intDto);
+		    	
+		    }
+		    
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			System.out.println("getInterList() -> intoFinally ...");
+		}
+		
+		return lst;
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<InterventoDTO> getInterListOld(String txt) {
+		
+		System.out.println("getInterListOld() -> start ...");
 		List<InterventoDTO> lst = new ArrayList<InterventoDTO>();
 		if (txt != null && "Stats:".compareTo(txt) == 0) {
 			

@@ -847,4 +847,4 @@ public class Load2010x2012 {
 		lStr.add("2011-11-10;TAPPARELLI Mauro;01\5) KOMORI 840;1444 PINZE REGOLAZIONE E PULIZIAEffettuato da Mec Graf");
 		lStr.add("2011-08-25;TAPPARELLI Mauro;06) TIMSONS T14/2;1115 PARAOLIO INCHIOSTRAZIONE causa perdita olio cambiati paraolio, solo paraolio e non cuscinetti.");
 	}
-	}
+}

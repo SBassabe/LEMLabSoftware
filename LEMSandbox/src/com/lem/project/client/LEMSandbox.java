@@ -51,6 +51,11 @@ public class LEMSandbox implements EntryPoint {
 						public void onSuccess(List<InterventoDTO> result) {
 							
 							System.out.println("All Good ... result size -> " + result.size());
+							// First Record contains stats !!!
+							InterventoDTO intDtoStats = result.get(0);
+							String stats = intDtoStats.getDescrizione();
+							result.remove(0);
+							
 							int r = 0;
 							if (result != null) r = result.size();
 							
@@ -82,14 +87,14 @@ public class LEMSandbox implements EntryPoint {
 							RootPanel.get("gridContainer").clear();
 							RootPanel.get("gridContainer").add(g);
 							
-							if (r > 99) {
+							//if (r > 99) {
 								
 								Label lb = new Label();
-								lb.setText("Restituiti piu di 100 occorenze. Restringere la ricerca!!");
+								lb.setText(stats);
 								RootPanel.get("errorLabelContainer").clear();
 								RootPanel.get("errorLabelContainer").add(lb);
 
-							}
+							//}
 							
 						}
 					});
@@ -120,7 +125,7 @@ public class LEMSandbox implements EntryPoint {
 		RootPanel.get("nameFieldContainer").add(nameField);
 		RootPanel.get("sendButtonContainer").add(sendButton);
 		RootPanel.get("errorLabelContainer").add(errorLabel);
-		RootPanel.get("populateButtonContainer").add(populateButton);
+		//RootPanel.get("populateButtonContainer").add(populateButton);
 
 		// Focus the cursor on the name field when the app loads
 		nameField.setFocus(true);
