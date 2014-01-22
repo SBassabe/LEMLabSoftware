@@ -1,6 +1,11 @@
 package com.lem.project.server;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,8 +28,12 @@ public class DocumentHelper {
 	private int min;
 	private int max;
 	
+	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	private static Date defaultDate = new Date();
+	
 	public DocumentHelper(){
 		System.out.println("Into DocumentHelper constructor...");
+		try { defaultDate = sdf.parse("2000-01-01"); } catch (Exception e) {}
 	}
 	
 	public void setYear(String year) {
@@ -128,7 +137,7 @@ public class DocumentHelper {
 		//String myDocId = "PA6-5000";
 		doc = Document.newBuilder()
 		    .setId(myDocId) // Setting the document identifer is optional. If omitted, the search service will create an identifier.
-		    .addField(Field.newBuilder().setName("data").setText(data))
+		    .addField(Field.newBuilder().setName("data").setDate(getDateFromString(data)))
 		    .addField(Field.newBuilder().setName("operatore").setText(operatore))
 		    .addField(Field.newBuilder().setName("macchina").setText(macchina))
 		    .addField(Field.newBuilder().setName("descrizione").setText(descrizione))
@@ -137,6 +146,21 @@ public class DocumentHelper {
 		docList.add(doc);
 
 	}
+	
+	private Date getDateFromString(String dt) {
+
+		Date dtObj = new Date();
+		
+		try {
+			dtObj = sdf.parse(dt);
+		} catch (ParseException e) {
+			System.out.println("Error: failure to get date from " + dt + " returning default date");
+			dtObj = defaultDate;	
+		}
+
+		return dtObj;
+	}
+	
 	
 	public void putIntoIndex() {
 		

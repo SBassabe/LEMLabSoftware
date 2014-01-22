@@ -1,0 +1,3 @@
+# Module lemsearch
+# RPC service class, partial path of RPC policy file
+com.lem.project.client.GreetingService, 710FDE46AF9E7587CE6AF38CDABDBC27.gwt.rpc

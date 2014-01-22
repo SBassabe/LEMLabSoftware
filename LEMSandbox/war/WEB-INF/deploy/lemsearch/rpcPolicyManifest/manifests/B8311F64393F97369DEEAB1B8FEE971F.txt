@@ -1,0 +1,2 @@
+serviceClass: com.lem.project.client.GreetingService
+path: 710FDE46AF9E7587CE6AF38CDABDBC27.gwt.rpc

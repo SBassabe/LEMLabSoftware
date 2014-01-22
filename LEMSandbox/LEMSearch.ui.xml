@@ -1,0 +1,88 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:style>
+		.important {
+			font-weight: bold;
+		}
+		.txtAlignRight {
+			text-align: right;
+		}
+		.gwt-Button {
+			width: 100%;
+		}
+	    </ui:style>
+    <g:DockLayoutPanel unit='EM'>    
+  	    <g:north size='11'>
+	        <g:HTMLPanel>
+	            <center><img alt="lemlab" src="LEM_logo_2.jpg" style="margin: 12px 0px 0px 0px;"></img></center>    
+	        </g:HTMLPanel>
+	    </g:north>
+	    <g:west size='20'>
+	      <g:HTMLPanel>
+	        <table align="center">
+		      <tr>       
+		        <td class='{style.txtAlignRight}'>Data</td>
+		        <td id="dateField"><g:TextBox></g:TextBox></td>
+		      </tr>
+		      <tr>       
+		        <td class='{style.txtAlignRight}'>Operatore</td>
+		        <td id="operField"><g:TextBox></g:TextBox></td>
+		      </tr>
+		      <tr>       
+		        <td class='{style.txtAlignRight}'>Macchina</td>
+		        <td id="macchinaField"><g:TextBox></g:TextBox></td>
+		      </tr>
+		      <tr>       
+		        <td class='{style.txtAlignRight}'>Descrizione</td>
+		        <td id="descrizioneField"><g:TextBox></g:TextBox></td>
+		      </tr>
+		      <tr>
+		        <td id="searchBtn" colspan='2'>
+		            <center>
+		                <g:Button styleName='{style.gwt-Button}'>Send</g:Button>
+		            </center>    
+		         </td>  
+		      </tr>
+		    </table>
+		  </g:HTMLPanel>
+	    </g:west>
+	    <g:center size='8'>
+	      <g:HTMLPanel>
+	        <center>  
+			    <g:Grid styleName="tableStyle">
+				  <g:row styleName="headerRowStyle">
+				    <g:customCell styleName="hdrDataStyle">
+				      <g:Label>Data</g:Label>
+				    </g:customCell>
+				    <g:customCell styleName="hdrStndrdStyle">
+				      <g:Label>Operatore</g:Label>
+				    </g:customCell>
+				    <g:customCell styleName="hdrStndrdStyle">
+				      <g:Label>Macchina</g:Label>
+				    </g:customCell>
+				    <g:customCell styleName="hdrDescrizioneStyle">
+				      <g:Label>Descrizione</g:Label>
+				    </g:customCell>
+				  </g:row>
+				  <g:row>
+				    <g:cell>
+				      <div>foo</div>
+				    </g:cell>
+				    <g:cell>
+				      <div>bar</div>
+				    </g:cell>
+				  </g:row>
+				 </g:Grid>
+	        </center>
+	      </g:HTMLPanel>
+	    </g:center>
+	    <g:south size="3">
+	      <g:HTMLPanel>
+
+	          <a href="http://www.lemlab.it/?language=it">LEMLabsSoftware - Search Module </a> 
+              <text>| Build: 20140120.1034</text>
+
+	      </g:HTMLPanel>
+	    </g:south>
+    </g:DockLayoutPanel>
+</ui:UiBinder>

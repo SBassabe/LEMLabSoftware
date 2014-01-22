@@ -55,14 +55,14 @@ public class LoadSrvlt extends HttpServlet {
 				Queue queue = QueueFactory.getDefaultQueue();
 				int listSize = Load2010x2012static.lst2011.size();
 				int bucketSize = 100;
-				
+				System.out.println("into queue with listSize " + listSize);
 				//just do 10
 				//listSize = 10;
 				int max;
 				
 				for (int i=1; i < listSize;) {
 					
-			    	TaskOptions topt = TaskOptions.Builder.withUrl("/lemsandbox/load");
+			    	TaskOptions topt = TaskOptions.Builder.withUrl("/lemsearch/load");
 			    	topt.param("loadDoc", "notnull");
 			    	topt.param("year","2011");
 			    	topt.param("min",i+"");
@@ -96,7 +96,7 @@ public class LoadSrvlt extends HttpServlet {
 			if ("queue".compareTo(loadEntity) == 0) {
 				
 				Queue queue = QueueFactory.getDefaultQueue();
-		    	TaskOptions topt = TaskOptions.Builder.withUrl("/lemsandbox/load");
+		    	TaskOptions topt = TaskOptions.Builder.withUrl("/lemsearch/load");
 		    	topt.param("loadEntity", "notnull");
 		    	queue.add(topt);
 				
@@ -140,7 +140,7 @@ public class LoadSrvlt extends HttpServlet {
 				}
 				*/
 				Queue queue = QueueFactory.getDefaultQueue();
-		    	TaskOptions topt = TaskOptions.Builder.withUrl("/lemsandbox/load");
+		    	TaskOptions topt = TaskOptions.Builder.withUrl("/lemsearch/load");
 		    	topt.param("clearIndex", "notnull");
 		    	queue.add(topt);
 				
@@ -209,10 +209,10 @@ public class LoadSrvlt extends HttpServlet {
 			
 		} else {
 			
-		  resp.getWriter().println("usage: /lemsandbox/load?loadDoc=queue");
-		  resp.getWriter().println("usage: /lemsandbox/load?loadEntity=queue");
-		  resp.getWriter().println("usage: /lemsandbox/load?clearIndex=queue");
-		  resp.getWriter().println("usage: /lemsandbox/load?queryStuff=<string>");
+		  resp.getWriter().println("usage: /lemsearch/load?loadDoc=queue");
+		  resp.getWriter().println("usage: /lemsearch/load?loadEntity=queue");
+		  resp.getWriter().println("usage: /lemsearch/load?clearIndex=queue");
+		  resp.getWriter().println("usage: /lemsearch/load?queryStuff=<string>");
 		  
 		}
 	}

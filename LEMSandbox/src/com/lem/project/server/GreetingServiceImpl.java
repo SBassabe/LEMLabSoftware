@@ -1,5 +1,6 @@
 package com.lem.project.server;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.Set;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
+
 
 
 //import com.lem.project.server.domain.Intervento;
@@ -28,6 +30,8 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  */
 @SuppressWarnings("serial")
 public class GreetingServiceImpl extends RemoteServiceServlet implements GreetingService {
+	
+	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 	public GreetingServiceImpl() {	
 	}
@@ -74,7 +78,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		    System.out.println("items returned -> " + results.getNumberReturned());
 		    
 		    intDto = new InterventoDTO();
-		    intDto.setDescrizione("Record Trovati: '"+ results.getNumberFound() +"'  Record Mostrati: '"+ results.getNumberReturned() +"'");
+		    intDto.setDescrizione(results.getNumberFound() +"@"+results.getNumberReturned());
 		    lst.add(intDto);
 		    
 		    // Iterate over the documents in the results
@@ -82,7 +86,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 
 		    	System.out.println("getId() -> " + document.getId() +  ",  macchina: " + document.getOnlyField("macchina").getText());
 		        // handle results
-		    	intDto = new InterventoDTO(document.getOnlyField("data").getText()
+		    	intDto = new InterventoDTO(sdf.format(document.getOnlyField("data").getDate())
 		    			                                ,document.getOnlyField("operatore").getText()
 		    			                                ,document.getOnlyField("macchina").getText()
 		    			                                ,document.getOnlyField("descrizione").getText());

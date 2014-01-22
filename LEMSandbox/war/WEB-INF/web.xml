@@ -8,7 +8,7 @@
   </servlet>
   <servlet>
     <servlet-name>load</servlet-name>
-    <servlet-class>com.lem.project.server.servlet.Load</servlet-class>
+    <servlet-class>com.lem.project.server.servlet.LoadSrvlt</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>RemoteApi</servlet-name>
@@ -18,11 +18,11 @@
   <!-- Servlet mappings -->
   <servlet-mapping>
     <servlet-name>load</servlet-name>
-    <url-pattern>/lemsandbox/load</url-pattern>
+    <url-pattern>/lemsearch/load</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/lemsandbox/greet</url-pattern>
+    <url-pattern>/lemsearch/greet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>RemoteApi</servlet-name>
@@ -31,6 +31,6 @@
   
   
   <welcome-file-list>
-    <welcome-file>LEMSandbox.html</welcome-file>
+    <welcome-file>LEMSearch.html</welcome-file>
   </welcome-file-list>
 </web-app>
