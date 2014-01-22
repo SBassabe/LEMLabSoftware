@@ -4,6 +4,15 @@ Introduzione: Software sviluppato dalla dita LEM Labs a Trento per la gestione d
 
 Revision History
 ------------------------------------------------------------------------
+Ver 1.0.4 - 23/01/2013
+------------------------------------------------------------------------
+UiBinder Maiden Commit
+- Migrazione delle parte grafica ad utilizzare UiBinder
+- Aggiunti 4 TextBox di ricerca: data, macchina, operatore, descrizione
+- Cambiato formato della data da String a Date
+- Caricato sul AppEngine come versione 4
+
+------------------------------------------------------------------------
 Ver 0.0.1 - 03/11/2013
 ------------------------------------------------------------------------
 POC (Proof of Concept) release:
